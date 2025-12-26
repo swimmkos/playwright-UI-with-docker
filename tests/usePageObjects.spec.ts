@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test'
 import { NavigationPage } from '../src/page-objects/navigationPage'
 import { FromLayoutsPage } from '../src/page-objects/formLayoutsPage'
 import { PageManager } from '../src/page-objects/pageManager'
+import { DatepickerPage } from '../src/page-objects/datepicketPage'
 import { faker } from '@faker-js/faker'
 
 test.beforeEach(async({page}) => {
@@ -42,4 +43,13 @@ test('parametrized methods 3', async({page}) => {
     await onFormLayoutsPage.submitInLineFormWithCredsAndCheckbox("randomFullName","test@test.com", true)
     page.locator('nb-card', {hasText: 'Inline form'}).screenshot({path: 'screenshots/inlineForm.png'})
     await navigateTo.formLayoutsPage()
+})
+
+test('datepicker page', async({page}) => {
+    const navigateTo = new NavigationPage(page)
+    const onDatepickerPage = new DatepickerPage(page)
+
+    await navigateTo.datepickerPage()
+    await onDatepickerPage.selectCommonDatePickerDateFromToday(2)
+    await onDatepickerPage.selectDatePickerDateWithRangeFromToday(2, 5)
 })

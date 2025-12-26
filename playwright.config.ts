@@ -85,12 +85,12 @@ export default defineConfig<TestOptions>({
     //   name: 'Google Chrome',
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
-  ],
+  ]
 
-  webServer: {
-    command: 'npm run start',
-    url: 'http://localhost:4200/'
-  }
+  // webServer: {
+  //   command: 'npm run start',
+  //   url: 'http://localhost:4200/'
+  // }
 
   /* Run your local dev server before starting the tests */
   // webServer: {

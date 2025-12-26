@@ -117,3 +117,30 @@ test('dialog box', async({page}) => {
         await page.getByRole('table').locator('tr', {hasText: "mdo@gmail.com"}).locator('nb-trash').click()
         await expect(page.locator('table tr').first()).not.toHaveText("mdo@gmail.com")
     })
+
+test('datepicker', async({page}) => {
+    await page.getByText('Forms').click();
+    await page.getByText('Datepicker').click();
+
+    const calendarInputField = page.getByPlaceholder('Form Picker')
+    await calendarInputField.click()
+
+    let date = new Date;
+    date.setDate(date.getDate() + 2)
+    const expectedDate = date.getDate().toString()
+    const expectedMonthShort = date.toLocaleString('En-US', {month: 'short'})
+    const expectedMonthLong = date.toLocaleString('En-US', {month: 'long'})
+    const expectedYear = date.getFullYear()
+    const dateToAssert = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`
+
+    let calendarMonthAndYear = await page.locator('nb-calendar-view-mode').textContent()
+    const expectedMonthAndYear = `${expectedMonthLong} ${expectedYear}`
+    while(!calendarMonthAndYear.includes(expectedMonthAndYear)) {
+        await page.locator('nb-calendar-pageable-navigation [data-name="chevrom-right"]').click()
+        calendarMonthAndYear = await page.locator('nb-calendar-view-mode').textContent()
+    }
+
+    await page.locator('[class="day-cell ng-star-inserted"]').getByText(expectedDate, {exact: true}).click()
+    await expect(calendarInputField).toHaveValue(dateToAssert)
+    
+})
